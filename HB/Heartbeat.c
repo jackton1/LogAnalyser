@@ -94,7 +94,9 @@ void test(){
 
 void run(){
     int hr1,min1,hr2,min2;
-    char t1, t2;
+    char t1[2], t2[2];
+    char am[2]  = "am";
+    char pm[2]  = "pm";
     int hour,m,m1,m2;
     int nc2000hb, nc500hb, nc103hb, nc201hb;
     char nc2000[1], nc500[1], nc103[1], nc201[1];
@@ -120,7 +122,7 @@ void run(){
             printf("\n\nDURATION\n");
             print_shortline();
             printf("\n\nEnter the Start Time of the Test like HH:MM am/pm? ");
-            int ret = scanf("%d:%d", &hr1, &min1);
+            int ret = scanf("%d:%d%s", &hr1, &min1, &t1);
             //Implement the am and pm analysis
             //Changing the data to display both the entered start time and the end time in a 12hour clock
             if(ret == 0){
@@ -140,20 +142,21 @@ void run(){
 
             else if(ret > 0){
                     printf("\nEnter the End Time of the Test using HH:MM am/pm? ");
-                    scanf("%d:%d", &hr2, &min2);
+                    scanf("%d:%d%s", &hr2, &min2, &t2);
+                    if (strncmp(t1, am, 2) == 0){
+                         hr1 = hr1;}
+                    else if(strncmp(t1, pm, 2) == 0){
+                         hr1 = hr1 + 12;}
+                    if (strncmp(t2, am, 2) == 0){
+                         hr2= hr2;}
+                    else if (strncmp(t2, pm, 2) == 0){
+                         hr2 = hr2 + 12;}
                     if(min1 > min2){
-                            m =  min1 - min2;
+                            m =  (min2+ 60) - min1;
                             hour = hr2 - hr1 - 1;}
                     if(min2 > min1) {
                             hour = hr2 - hr1;
-                            m1= min1;
-                            m2= min2;
-                                if (m1 > m2){
-                                    m = m1 - 60 + m2;
-                                    }
-                                else {
-                                    m = m2 - m1;}
-                                    }
+                            m = min2 - min1;}
                 print_line();
                 printf("\nHB EXPECTED FOR EACH DEVICE \n");
                 print_line();
@@ -161,7 +164,7 @@ void run(){
                 printf("\nRouter(s)\n");
                 print_shortline();
                     int total_hours = hour;
-                    int total_min = hour * 60;
+                    int total_min = hour * 60 + m;
                     int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
                     int i;
                         int HB[4], HB2[4];
