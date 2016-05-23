@@ -212,6 +212,7 @@ void terminate(){
             case 'r':
             case 'R':
                 system("cls");
+                fflush(stdin);
                 main();
                 break;
             case 'n':
