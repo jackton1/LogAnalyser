@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include<ctype.h>
 #include<string.h>
-//Create a program that take calculates the HB for each device with a giving duration
+//A program that calculates the HB for each device with a giving duration
 //It should take the start and end time in  24 hours
 // give the expected number of HB for each device during that duration
 //Type NEXT to continue the execution of the program or EXIT to close.
@@ -27,9 +27,9 @@ void main(){
 void print_shortline(){
     int i;
     for(i=0; i <13; i++){
-                        printf("_");
-                    }
+         printf("_"); }
 }
+
 void print_star(){
     int i;
     for ( i=0; i < 80; i++){
@@ -46,7 +46,7 @@ void help(){
         char arg;
         int count = 0;
         printf("\n:");
-        scanf("%s",&arg);
+        gets(arg);
         switch (arg){
             case 's':
             case 'S':
@@ -69,10 +69,7 @@ void test(){
     print_line();
     printf("\n-'S' to start program\n-'R' to restart\n-'T' to terminate\n");
     printf("\n:");
-    //find a way to store the input
-    //fgets (val, 60, stdin);
-    scanf("%s", &val);
-    //printf("value is", val);
+    gets(val);
        switch (val[0]){
         case 'r':
         case 'R':
@@ -161,8 +158,8 @@ void run(){
                 printf("\nHB EXPECTED FOR EACH DEVICE \n");
                 print_line();
                 printf("\nThe total time is %d hours %d minutes \n", hour, m);
-                if (nc2000 == 'h'||nc201 == 'h'||nc500 == 'h'||nc103 == 'h' ){
-                    printf("%c %c %c %c",nc2000,nc201,nc500,nc103);
+                if (nc2000[0] == 'h'||nc201[0] == 'h'||nc500[0] == 'h'||nc103[0] == 'h' ){
+                    //printf("%c %c %c %c",nc2000,nc201,nc500,nc103);
                     int total_hours = hour;
                     int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
                     int i;
@@ -186,12 +183,10 @@ void run(){
 
                              }
                         }
-                else if (nc2000 == 'm'||nc201 == 'm'||nc500 == 'm'||nc103 == 'm' ){
-                        printf("minutes");
+                else if (nc2000[0] == 'm'||nc201[0] == 'm'||nc500[0] == 'm'||nc103[0] == 'm' ){
+                       
 
                 }
-               // printf(" %d nc 2000\n %d nc 500\n %d nc 201\n %d nc 103", nc2000hb, nc500hb, nc201hb, nc103hb);
-            //if(hour == )
             terminate();
         }
 }
