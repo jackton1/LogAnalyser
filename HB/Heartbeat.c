@@ -14,6 +14,7 @@ void print_star();
 void terminate();
 void print_line();
 void print_shortline();
+
 void main(){
         //system("cls");
         system("COLOR F1");
@@ -101,7 +102,7 @@ void run(){
     char am[2]  = "am";
     char pm[2]  = "pm";
     unsigned int hour,m,m1,m2;
-    int nc2000hb, nc500hb, nc103hb, nc201hb;
+    unsigned int nc2000hb, nc500hb, nc103hb, nc201hb;
     char nc2000[1], nc500[1], nc103[1], nc201[1];
             printf("\n");
             printf("\nEnter the HB Settings like \"6H or 6h\" for Six hours interval 'm' for minute\n");
@@ -168,11 +169,11 @@ void run(){
                     printf("\nRouter(s)\n");
                     print_shortline();
                     int total_hours = hour;
-                    int total_min = hour * 60 + m;
-                    int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
+                    unsigned int total_min = hour * 60 + m;
+                    unsigned int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
                     int i;
-                    int HB[4], HB2[4];
-                        for(i=0; i<4; i++){
+                    unsigned int HB[4], HB2[4];
+                         for(i=0; i<4; i++){
                             HB2[i]=total_min/val[i];
                             HB[i]=total_hours/val[i];
                             }
