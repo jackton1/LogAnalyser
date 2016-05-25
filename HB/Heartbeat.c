@@ -145,22 +145,23 @@ void run(){
                 }
 
             else if(ret > 0){
+                    printf("%s",t1);
                     printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
                     scanf(" %d:%d %s", &hr2, &min2, &t2);
-                    if (strncmp(t1, am, 2) == 0){
+                    if (strcmp(t1, am) == 0){
                          hr1 = hr1;}
-                    else if(strncmp(t1, pm, 2) == 0){
+                    if(strcmp(t1, pm) == 0){
                          hr1 = hr1 + 12;}
-                    if (strncmp(t2, am, 2) == 0){
+                    if (strcmp(t2, am) == 0){
                          hr2= hr2;}
-                    else if (strncmp(t2, pm, 2) == 0){
+                    if (strcmp(t2, pm) == 0){
                          hr2 = hr2 + 12;}
                     if(min1 > min2){
                             m =  (min2+ 60) - min1;
                             hour = hr2 - hr1 - 1;}
-                    if(min2 > min1) {
-                            hour = hr2 - hr1;
-                            m = min2 - min1;}
+                            if(min2 > min1) {
+                                hour = hr2 - hr1;
+                                m = min2 - min1;}
                 if(hour <= 24 ){
                     print_line();
                     printf("\nHB EXPECTED FOR EACH DEVICE \n");
