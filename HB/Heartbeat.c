@@ -98,9 +98,10 @@ void test(){
 
 void run(){
     unsigned int hr1,min1,hr2,min2;
-    char t1[2], t2[2];
-    char am[2]  = "am";
-    char pm[2]  = "pm";
+    char t1[20];
+    char t2[20];
+    char am[] = "am";
+    char pm[]  = "pm";
     unsigned int hour,m,m1,m2;
     unsigned int nc2000hb, nc500hb, nc103hb, nc201hb;
     char nc2000[1], nc500[1], nc103[1], nc201[1];
@@ -148,68 +149,73 @@ void run(){
                     printf("%s",t1);
                     printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
                     scanf(" %d:%d %s", &hr2, &min2, &t2);
-                    if (strcmp(t1, am) == 0){
-                         hr1 = hr1;}
-                    if(strcmp(t1, pm) == 0){
-                         hr1 = hr1 + 12;}
-                    if (strcmp(t2, am) == 0){
-                         hr2= hr2;}
-                    if (strcmp(t2, pm) == 0){
+                    if (strcmp(am,t1) == 0){
+                         hr1 = hr1;
+                         }
+                    if(strcmp( pm,t1) == 0){
+                         hr1 = hr1 + 12;
+                         }
+                    if (strcmp(am ,t2) == 0){
+                         hr2= hr2;
+                         }
+                    if (strcmp(pm, t2) == 0){
                          hr2 = hr2 + 12;}
                     if(min1 > min2){
-                            m =  (min2+ 60) - min1;
-                            hour = hr2 - hr1 - 1;}
-                            if(min2 > min1) {
-                                hour = hr2 - hr1;
-                                m = min2 - min1;}
-                if(hour <= 24 ){
-                    print_line();
-                    printf("\nHB EXPECTED FOR EACH DEVICE \n");
-                    print_line();
-                    printf("\nThe total time is %d hours %d minute(s) \n", hour, m);
-                    printf("\nRouter(s)\n");
-                    print_shortline();
-                    int total_hours = hour;
-                    unsigned int total_min = hour * 60 + m;
-                    unsigned int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
-                    int i;
-                    unsigned int HB[4], HB2[4];
-                         for(i=0; i<4; i++){
-                            HB2[i]=total_min/val[i];
-                            HB[i]=total_hours/val[i];
-                            }
-                            if(nc2000[0] == 'h'){
+                         m =  (min2+ 60) - min1;
+                         hour = hr2 - hr1 - 1;}
+                    if(min2 > min1) {
+                            hour = hr2 - hr1;
+                            m = min2 - min1;}
+
+                        if(hour <= 24 ){
+                            print_line();
+                            printf("\nHB EXPECTED FOR EACH DEVICE \n");
+                            print_line();
+                            printf("\nThe total time is %d hours %d minute(s) \n", hour, m);
+                            printf("\nRouter(s)\n");
+                            print_shortline();
+                            int total_hours = hour;
+                            unsigned int total_min = hour * 60 + m;
+                            unsigned int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
+                            int i;
+                            unsigned int HB[4], HB2[4];
+                                for(i=0; i<4; i++){
+                                    HB2[i]=total_min/val[i];
+                                    HB[i]=total_hours/val[i];
+                                    }
+                                if(nc2000[0] == 'h'){
                                     if(val[0]> total_hours){
                                         printf("\n\nPatient unit (NC-2000): NO HB(s) Expected\n");}
                                     else{
                                         printf("\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB[0]);}}
 
-                            if(nc2000[0] == 'm'){printf("\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB2[0]);}
+                                if(nc2000[0] == 'm'){printf("\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB2[0]);}
 
-                            if(nc201[0] == 'h') {
+                                if(nc201[0] == 'h') {
                                     if(val[1]> total_hours){
                                         printf("\nBeacon (NC-201)         : NO HB(s) Expected\n\n\nEnd Devices\n");}
                                     else{
                                         printf("\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB[1]);}}
 
-                            if(nc201[0] == 'm') {printf("\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB2[1]);}
+                                if(nc201[0] == 'm') {printf("\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB2[1]);}
 
-                            if(nc500[0] == 'h') {print_shortline();
+                                if(nc500[0] == 'h') {print_shortline();
                                     if(val[2]> total_hours){
                                         print_shortline();
                                         printf("\n\nPendant (NC-500)      : NO HB(s) Expected\n");}
                                     else{
                                         printf("\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB[2]);}}
-                            if(nc500[0] == 'm') {print_shortline();
+                                if(nc500[0] == 'm') {print_shortline();
                                                  printf("\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB2[2]);}
 
-                            if(nc103[0] == 'h') {
+                                if(nc103[0] == 'h') {
                                     if(val[3]> total_hours){
                                         printf("\nPull Station (NC-103)   : NO HB(s) Expected\n");}
                                     else{
                                         printf("\nPull Station (NC-103)   : %d HB(s) Expected\n",HB[3]);}}
-                            if(nc103[0] == 'm') {printf("\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);}
-                        }
+                                if(nc103[0] == 'm') {printf("\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);}
+                            }
+
                 else{
                     printf("Sorry You can only Check For Duration of 24 hours");
                     }
