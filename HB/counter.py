@@ -1,3 +1,4 @@
+from datetime import datetime
 from collections import Counter
 data=['10:33',
 '10:33',
@@ -325,16 +326,19 @@ f = open('25th May 2016 Micare Report.doc', 'w')
 length = str(len(m))
 f.write("MICARE TEST REPORT\n")
 f.write("_"* 40)
-f.write("\nDate: 25th May 2016\n\n")
+f.write("\nTest Date: 25th May 2016\n\n")
 f.write("Test Time: 10:30 am - 11:59 pm\n\n")
 f.write("The Total Number of Time Messages where sent is :" +length+ "\n\n\n\n")
 f.write("\n\nThe Message count each time is :\n\n")
 string2 = list(m.items())
 string2.sort()
 for item in string2:
-    stnd= str(item).strip('{[]}')
-    f.write(stnd + "\n")
-f.write("\n\n\n\n\n\n"+"*" * 15)
+    stnd= str(item).strip('{[)]}')
+    f.write(stnd + " Messages where sent\n")
+f.write("\n\n\n"+"*" * 15)
 f.write("Python 3.5.1 Auto Generated Log Data Report")
 f.write("*" * 15)
+date = str("{:%d.%m.%Y}".format(datetime.now()))
+time = str("{:%H.%M.%S}".format(datetime.now()))
+f.write("\n\nDate Created: {}\tTime: {}".format(date,time))
 f.close()
