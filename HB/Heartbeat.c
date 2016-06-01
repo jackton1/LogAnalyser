@@ -7,17 +7,9 @@
 // give the expected number of HB for each device during that duration
 //Type NEXT to continue the execution of the program or EXIT to close.
 /*Implement a minute conversion of the hours and add it to the minutes to get the total duration*/
-void test();
-void run();
-void help();
-void print_star();
-void terminate();
-void print_line();
-void print_shortline();
 
-void main(){
-        //system("cls");
-        system("COLOR F1");
+void start(void){
+    system("COLOR F1");
         system("mode CON: COLS=85 LINES=50");
         print_star();
         printf("\n\t\t\tWELCOME TO MICARE LOG ANALYZER\n\n");
@@ -26,8 +18,9 @@ void main(){
         printf("\t\tType \"H\" for HELP to show list of commands or \"S\" to START \n");
         print_line();
         help();
-}
+        //system("cls");
 
+}
 void print_shortline(){
     int i;
     for(i=0; i <13; i++){
@@ -46,9 +39,48 @@ void print_line(){
         printf("_");}
 }
 
+void terminate(){
+
+        char val;
+        int count = 0;
+        do{
+        fflush(stdin);
+        printf("\nAre you sure you want to Quit? Press'Y/N' or 'R' to restart>:");
+        scanf("%c", &val);
+        val = tolower(val);
+        count+= 1;
+        switch(val){
+            case 'y':
+                //printf("\nPress ENTER a 2 times to terminate the program");
+                //fflush(stdout);
+                // getchar(); to terminate the program
+                //getchar(); to restart:
+                break;
+            case 'r':
+                system("cls");
+                fflush(stdin);
+                main();
+                break;
+            case 'n':
+                run();
+                break;
+            default:
+                printf("\nDidn't Enter a right choice\n");
+                print_line();
+                printf("\nTRY AGAIN YOU HAVE %d TRIE(S) LEFT\n", 3-count);
+                //terminate();
+                break;
+                }
+         if(count == 2){
+            printf("Exiting Program !!!");
+            exit(0);
+         }
+        }
+        while(val != 'r' || val != 'n' || val != 'y');
+
+}
 void help(){
         char arg[1];
-        int count = 0;
         printf("\n:");
         gets(arg);
         switch (arg[0]){
@@ -61,8 +93,7 @@ void help(){
                 test();
                 break;
             default:
-                printf("Sorry not a valid command\n");
-                help();
+                printf("Sorry not a valid command\n");}
                 break;
     }
 }
@@ -78,7 +109,7 @@ void test(){
         case 'R':
         case 'r':
             system("cls");
-            main();
+            start();
             break;
         case 'S':
         case 's':
@@ -98,7 +129,16 @@ void test(){
        while(strlen(val) != 1);
 }
 
-void run(){
+
+int run(){
+    FILE *fp;
+   fp = fopen("Micare Test Report 30-05-2016.doc" , "w");
+ if (fp == NULL)
+   {
+      perror("Error opening file");
+        return(-1);
+   }
+ else{
     unsigned int hr1,min1,hr2,min2;
     int counter = 0;
     char t1[20];
@@ -110,6 +150,7 @@ void run(){
     unsigned int nc2000hb, nc500hb, nc103hb, nc201hb;
     char nc2000[1], nc500[1], nc103[1], nc201[1];
             printf("\n");
+            fprintf(fp,str);
         do{ printf("\nEnter the HB Settings like \"6H or 6h\" for Six hours interval 'm' for minute\n");
             print_line();
             printf("\n\nRouter(s)\n");
@@ -147,6 +188,8 @@ void run(){
             fflush(stdin);
             printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
             scanf(" %d:%d %s", &hr2, &min2, t2);
+            char str[] = "MICARE TEST REPORT\n" + print_line() + "\nStart Time: " + hr1+":"+min1+" "+t1;
+                 str += "\n End Time: "+ hr2+":"+min2+" "+t2 + "\n" + print_line();
                 if (strcmp(am,t1) == 0){
                          hr1 = hr1;
                          }
@@ -214,50 +257,27 @@ void run(){
                                             printf("\nPull Station (NC-103)   : %d HB(s) Expected\n",HB[3]);}}
                                     if(nc103[0] == 'm') {printf("\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);}
                                 }
-
+                        fclose(fp);
+                    }
                         else{
                                 printf("Sorry You can only Check For Duration of 24 hours");
                             }
                 terminate();
 }
 
-void terminate(){
 
-        char val;
-        int count = 0;
-        do{
-        fflush(stdin);
-        printf("\nAre you sure you want to Quit? Press'Y/N' or 'R' to restart>:");
-        scanf("%c", &val);
-        val = tolower(val);
-        count+= 1;
-        switch(val){
-            case 'y':
-                //printf("\nPress ENTER a 2 times to terminate the program");
-                //fflush(stdout);
-                // getchar(); to terminate the program
-                //getchar(); to restart:
-                break;
-            case 'r':
-                system("cls");
-                fflush(stdin);
-                main();
-                break;
-            case 'n':
-                run();
-                break;
-            default:
-                printf("\nDidn't Enter a right choice\n");
-                print_line();
-                printf("\nTRY AGAIN YOU HAVE %d TRIE(S) LEFT\n", 3-count);
-                //terminate();
-                break;
-                }
-         if(count == 2){
-            printf("Exiting Program !!!");
-            exit(0);
-         }
-        }
-        while(val != 'r' || val != 'n' || val != 'y');
 
+
+void test();
+int run();
+void help();
+void print_star();
+void terminate();
+void print_line();
+void print_shortline();
+void start(void);
+
+
+void main(){
+        start();
 }

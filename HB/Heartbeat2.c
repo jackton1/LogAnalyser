@@ -17,22 +17,6 @@ void terminate();
 int write_to_file();
 
 
-void start(void)
-{
-    char s[5] = "star";
-    char l[5] = "line";
-    system("COLOR F1");
-    system("mode CON: COLS=85 LINES=50");
-    print(s);
-    printf("\n\t\t\tWELCOME TO MICARE LOG ANALYZER\n\n");
-    print(s);
-    print(s);
-    printf("\t\tType \"H\" for HELP to show list of commands or \"S\" to START \n");
-    print(l);
-    help();
-    //system("cls");
-}
-
 void print(char str [])
 {
     int i;
@@ -127,7 +111,7 @@ int run(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min1,t1,hr
 {
     int i;
     FILE *fp;
-    fp = fopen("Micare Test Report 30-05-2016.doc","w");
+    fp = fopen("./Python Log Analyzer/29th May 2016 Micare Report.doc","w");
 	if (fp == NULL){
         perror("\nError Opening File");
 	}
@@ -135,7 +119,7 @@ int run(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min1,t1,hr
 	    char s[5] = "star";
 	    char l[5] = "line";
 	    char sl[6] = "sline";
-		fprintf(fp,"MICARE TEST REPORT\n");
+		fprintf(fp,"\n\nMICARE TEST REPORT\n");
 		for (i=0; i < 70; i++){
 	            fprintf(fp,"_");
 	    	}
@@ -266,26 +250,6 @@ void terminate()
 
 }
 
-void help()
-{
-        char arg[1];
-        printf("\n:");
-        gets(arg);
-        switch (arg[0]){
-        case 's':
-        case 'S':
-                data_get();
-                break;
-        case 'h':
-        case 'H':
-                test();
-                break;
-        default:
-                printf("Sorry not a valid command\n");
-                break;
-        }
-}
-
 void test(){
     char val[1];
     char l[5] = "line";
@@ -315,11 +279,47 @@ void test(){
 	            //test();
 	           	break;
 	    }
-    } while(strlen(val) != 1);
+    } while(val[0] != 114 || val[0] != 115 || val[0] != 116 || val[0] != 82 || val[0] != 83 || val[0] != 84);
 }
 
+void help()
+{
+    char arg[1];
+    LOOP:
+         printf("\n:");
+         gets(arg);
+        do{
+            switch (arg[0]){
+            case 's':
+            case 'S':
+                    data_get();
+                    break;
+            case 'h':
+            case 'H':
+                    test();
+                    break;
+            default:
+                    printf("Sorry not a valid command\n");
+                    goto LOOP;
+            }
+        }while(arg[0] != 115 ||arg[0] !=  83 ||arg[0] !=  104 ||arg[0] !=  72);
+}
 
-
+void start(void)
+{
+    char s[5] = "star";
+    char l[5] = "line";
+    system("COLOR F1");
+    system("mode CON: COLS=85 LINES=50");
+    print(s);
+    printf("\n\t\t\tWELCOME TO MICARE LOG ANALYZER\n\n");
+    print(s);
+    print(s);
+    printf("\t\tType \"H\" for HELP to show list of commands or \"S\" to START \n");
+    print(l);
+    help();
+    //system("cls");
+}
 
 void main(void)
 {
