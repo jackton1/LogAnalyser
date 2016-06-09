@@ -250,7 +250,8 @@ void terminate()
 
 }
 
-void test(){
+void test()
+{
     char val[1];
     char l[5] = "line";
     printf("\nThese are the list of commands available\n");
