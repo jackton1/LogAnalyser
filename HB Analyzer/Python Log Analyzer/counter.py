@@ -606,7 +606,7 @@ data=['0:00',
 m = Counter(data)
 from ast import literal_eval
 string = repr(m)
-f = open('./Log Files/29th May 2016 Micare Report.doc', 'a')
+f = open('../../../LogAnalyzer/Logs/29th May 2016 Micare Report.doc', 'w')
 length = str(len(m))
 f.write("MICARE TEST REPORT\n")
 f.write("_"* 40)
