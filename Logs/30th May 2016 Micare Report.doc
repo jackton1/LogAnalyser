@@ -1,27 +1,28 @@
-		Created: Mon Jun 13 20:03:42 2016
+		Created: Fri Jun 17 10:07:57 2016
  
 
 
 
-MICARE TEST REPORT______________________________________________________________________
-Start Time: 8:0 am 
+MICARE TEST REPORT
+______________________________________________________________________
+Start Time: 10:11 am 
 End Time: 23:59 pm
 ______________________________________________________________________
 HB EXPECTED FOR EACH DEVICE 
 ______________________________________________________________________
-The total time is 15 hours 59 minute(s) 
+The total time is 13 hours 48 minute(s) 
 
 Router(s)
 ______________
 
-Patient unit (NC-2000): 15 HB(s) Expected
+Patient unit (NC-2000): 13 HB(s) Expected
 
-Beacon (NC-201)         : 15 HB(s) Expected
+Beacon (NC-201)         : 13 HB(s) Expected
 
 
 End Device(s)
-__________________________________
+____________________________
 
-Pendant (NC-500)      : 15 HB(s) Expected
+Pendant (NC-500)      : 82 HB(s) Expected
 
-Pull Station (NC-103)   : 15 HB(s) Expected
+Pull Station (NC-103)   : 2 HB(s) Expected

@@ -1,0 +1,54 @@
+from datetime import datetime
+from collections import Counter
+import sys
+from msvcrt import getch
+
+l = []
+input("Enter the data you like to analyze >")
+val = getch()
+print(val)
+    
+#user_data = ''.join(user_data).replace('\r', ' ')
+#user_data = user_data.replace('\n', ' ').replace('\r', '')
+#print(user_data)
+##for line in sys.stdin:
+##    key = ord(getch())
+##    if key == 255: #Enter
+##        line.replace("\n", "")
+##        line.strip()
+##        print(line)
+##        l.append(line)
+##        break
+##    
+##print(l)
+##analyze = '"""{}"""'.format(user_data)
+##print(analyze)
+##data = user_data.split(",")
+##print(data)
+##m = Counter(data)
+##from ast import literal_eval
+##string = repr(m)
+##f = open('../../../LogAnalyzer/Logs/29th May 2016 Micare Report.doc', 'w')
+##length = str(len(m))
+##f.write("MICARE TEST REPORT\n")
+##f.write("_"* 40)
+##f.write("\nTest Date: 29th May 2016\n\n")
+##f.write("Test Time: 00:00 am - 11:59 pm\n\n")
+##f.write("The Total Number of Time Messages where sent is: " +length+ "\n\n\n\n")
+##f.write("\nDevice under Test\n")
+##f.write("_"*30)
+##f.write("\nDevice Type: NC-500 (Pendant)\nMAC Address: 00:1E:71:05:00:02:34")
+##f.write("\n\nThe Message count each time is :\n\n")
+##string2 = list(m.items())
+##string2.sort()
+##for item in string2:
+##    stnd= str(item).strip('{[)]}')
+##    f.write(stnd + " Messages where sent)\n")
+##f.write("\n\n\n"+"*" * 15)
+##f.write("Python 3.5.1 Auto Generated Log Data Report")
+##f.write("*" * 15)
+##date = str("{:%d.%m.%Y}".format(datetime.now()))
+##time = str("{:%H.%M.%S}".format(datetime.now()))
+##f.write("\n\nDate Created: {}\tTime: {}".format(date,time))
+##f.close()
+##
