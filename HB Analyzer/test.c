@@ -1,9 +1,9 @@
 /*
  * File:	 Heart beat Log Analyzer -test.c
  * Author:   Tonye Jack (tonyejck@gmail.com)
- * 
- * This project is a Log Report Analyzer which calculates the user defined data. 
- * And generates a log report stored in a specified location in the local drive 
+ *
+ * This project is a Log Report Analyzer which calculates the user defined data.
+ * And generates a log report stored in a specified location in the local drive
  * which can be in doc or txt format.
  */
 
@@ -13,7 +13,7 @@
 #include<ctype.h>
 #include<time.h>
 
-/*Ouput to the console*/
+/*Output to the console*/
 #define con stdout
 
 /*Calculate the result for the log data, like the duration of the test, total individual expected heart beat
@@ -28,7 +28,7 @@ void init_console(void);
 void print_goodbye(void);
 void print_help(void);
 void print_welcome(void);
-int get_date(void);
+char get_date(void);
 
 
 int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min1,t1,hr2,min2,t2,hour,m)
@@ -37,8 +37,17 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
   time_t t;
   time(&t);
   FILE *fp;
+//  char new_date[18];
+//
+//  snprintf(new_date, sizeof date, "%s", date)
+//  char file[80];
+
+  ////strcpy(file, );
+  //strcat(date,file);
+  //strcat(file,);
+
   /*Creates a file in the location to write in the log information*/
-  fp = fopen("../Logs/30th May 2016 Micare Report.doc","w");
+  fp = fopen("../Logs/ 20th June 2016 Micare Report.doc" ,"w");
     if (fp == NULL){
         /*Displays an error message on the console when file cant be open or written into*/
         perror("\nError Opening File");
@@ -129,26 +138,27 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
      }
 }
 
-int get_date(void)
-{
-  //FIX ISSUES WITH DATE ALLOCATION
- 
-  //typedef struct {
-  // char date[20];
-  // } Date;
-
-
-  char date[11];
-  char *ch;
-  printf("Enter the Date of Test DD/MM/YY >");
-  fgets(date, 11 ,stdin);
-  ch = strtok(date, "/");
-    // while(ch != NULL) {
-    //       printf("%s\n", ch);
-    //       ch = strtok(NULL,"/");  
-    //}
-    //return date;
-}
+//char get_date(void)
+//{
+//  //FIX ISSUES WITH DATE ALLOCATION
+//
+//  //typedef struct {
+//  // char date[20];
+//  // } Date;
+//  char *date;
+//  /*Get the Date for the Test Report*/
+//  fflush(stdin);
+//  printf("Enter the Date of Test DD Month YYYY >");
+//  fgets(date, 18 ,stdin);
+//  //ch = strtok(date, "/");
+//    // while(ch != NULL) {
+//    //       printf("%s\n", ch);
+//    //       ch = strtok(NULL,"/");
+//    //}
+//    //
+//   return *date;
+//
+//}
 
 
 int data_get(void)
@@ -162,7 +172,6 @@ int data_get(void)
   unsigned int hour,m,m1,m2;
   unsigned int nc2000hb, nc500hb, nc103hb, nc201hb;
   char nc2000, nc500, nc103, nc201;
-  char date[11] = get_date();
   printf("\n");
   printf("\nEnter the HB Settings like \"6H or 6h\" for Six hours interval 'm' for minute\n");
   print_hline(con, 40);
@@ -282,7 +291,6 @@ void init_console(void)
 void main(void)
 {
   char cmd;
-
   /* Initialize the console */
   init_console();
 
@@ -293,8 +301,6 @@ void main(void)
   printf("Enter 'H' for help or 'S' to start\n");
   print_hline(con, 85);
 
-  /*Get the Date for the Test Report*/
-  test_date();
 
   /* Main loop: receive input from the user and process it
    * decides to terminate the application... */
