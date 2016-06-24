@@ -37,17 +37,15 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
   time_t t;
   time(&t);
   FILE *fp;
-//  char new_date[18];
-//
-//  snprintf(new_date, sizeof date, "%s", date)
-//  char file[80];
-
-  ////strcpy(file, );
-  //strcat(date,file);
-  //strcat(file,);
-
+  char date [18];
+  char path[] = "../Logs/";
+  printf("Enter the Date of the Test Report? > ");
+  fgets(date ,18,stdin);
+  printf("The date entered was: %s",date);
   /*Creates a file in the location to write in the log information*/
-  fp = fopen("../Logs/ 20th June 2016 Micare Report.doc" ,"w");
+  strcat(date,".doc");
+  strcat(path,date);
+  fp = fopen(path ,"w");
     if (fp == NULL){
         /*Displays an error message on the console when file cant be open or written into*/
         perror("\nError Opening File");
@@ -138,28 +136,6 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
      }
 }
 
-//char get_date(void)
-//{
-//  //FIX ISSUES WITH DATE ALLOCATION
-//
-//  //typedef struct {
-//  // char date[20];
-//  // } Date;
-//  char *date;
-//  /*Get the Date for the Test Report*/
-//  fflush(stdin);
-//  printf("Enter the Date of Test DD Month YYYY >");
-//  fgets(date, 18 ,stdin);
-//  //ch = strtok(date, "/");
-//    // while(ch != NULL) {
-//    //       printf("%s\n", ch);
-//    //       ch = strtok(NULL,"/");
-//    //}
-//    //
-//   return *date;
-//
-//}
-
 
 int data_get(void)
 {
@@ -199,6 +175,7 @@ int data_get(void)
   fflush(stdin);
   printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
   scanf(" %d:%d %s", &hr2, &min2, t2);
+  getchar();
     if (strcmp(am,t1) == 0){
              hr1 = hr1;
         }
@@ -225,7 +202,7 @@ int data_get(void)
 int user_input(void)
 {
   char buf[2];
-  fflush(stdin);
+  getchar();
   int c;
   /* Print a prompt indicating we are waiting for user input */
   printf("\n> ");
@@ -300,11 +277,8 @@ void main(void)
   /* Print a helpful help message */
   printf("Enter 'H' for help or 'S' to start\n");
   print_hline(con, 85);
-
-
   /* Main loop: receive input from the user and process it
    * decides to terminate the application... */
-
   while ((cmd = user_input()) != 't') {
 
     switch (cmd) {
