@@ -1,6 +1,7 @@
 from datetime import datetime
 from collections import Counter
 from ast import literal_eval
+from subprocess import call
 
 
 ##Needs to be implemented
@@ -14,6 +15,7 @@ from ast import literal_eval
 
 
 def source_file():
+    #call(["./LogAnalyzer", "args", "to", "LogAnalyzer.exe"])
     file = input("Enter File name >")
     with open(file +'.txt') as file:
         lines = file.read().splitlines()
