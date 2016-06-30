@@ -12,6 +12,7 @@
 #include<stdlib.h>
 #include<ctype.h>
 #include<time.h>
+#include "test.h"
 
 /*Output to the console*/
 #define con stdout
@@ -19,32 +20,108 @@
 /*Calculate the result for the log data, like the duration of the test, total individual expected heart beat
 for each device*/
 
-int decode_log();
-int data_get(void);
-int user_input(void);
-void print_stars(FILE* fp, int len);
-void print_hline(FILE* f, int len);
-void init_console(void);
-void print_goodbye(void);
-void print_help(void);
-void print_welcome(void);
-char get_date(void);
+struct log_info {
+             int nc2000hb;
+             int nc201hb;
+             int nc500hb;
+             int nc103hb;
+             char nc2000;
+             char nc201;
+             char nc500;
+             char nc103;
+              int hr1;
+              int min1;
+              char t1[20];
+              int hr2;
+              int min2;
+              char t2[20];
+              int hour;
+              int m;
+        };
 
+int decode_log( struct log_info info);
 
-int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min1,t1,hr2,min2,t2,hour,m)
+int data_get(void)
+{
+  struct log_info info;
+  int counter = 0;
+  int noon = 12;
+  char am[] = "am";
+  char pm[]  = "pm";
+  printf("\n");
+  printf("\nEnter the HB Settings like \"6H or 6h\" for Six hours interval 'm' for minute\n");
+  print_hline(con, 40);
+  printf("\n\nRouter(s)\n");
+  print_hline(con, 20);
+  printf("\n\nPatient Unit (NC-2000) HB Set to(Hours/Minutes): ");
+  scanf("%i %c",&(info.nc2000hb),&(info.nc2000));
+  getchar();
+  printf("\nBeacon(NC-201)HB Set to (Hours/Minutes): ");
+  scanf("%i%c",&(info.nc201hb), &(info.nc201));
+  fflush(stdin);
+  printf("\n\nEnd Device(s)\n");
+  print_hline(con, 20);
+  printf("\n\nPendant (NC-500) HB Set to (Hours/Minutes): ");
+  scanf("%d%c",&(info.nc500hb), &(info.nc500));
+  fflush(stdin);
+  printf("\nPull Station (NC-103) HB Set to (Hours/Minutes): ");
+  scanf("%d%c",&(info.nc103hb), &(info.nc103));
+  fflush(stdin);
+  printf("\n\nDURATION\n");
+  print_hline(con, 20);
+  fflush(stdin);
+  printf("\n\nEnter the Start Time of the Test using 12hour clock like HH:MM am/pm?: ");
+  scanf(" %d:%d %s", &(info.hr1), &(info.min1), &(info.t1));
+  fflush(stdin);
+  printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
+  scanf(" %d:%d %s", &(info.hr2), &(info.min2), &(info.t2));
+  fflush(stdin);
+    if (strcmp(am,info.t1) == 0){
+             info.hr1 = info.hr1;
+        }
+    if (strcmp(pm,info.t1) == 0){
+             info.hr1 = info.hr1 + 12;
+        }
+    if (strcmp(am,info.t2) == 0){
+             info.hr2 = info.hr2;
+        }
+    if (strcmp(pm, info.t2) == 0){
+             info.hr2 = info.hr2 + 12;
+        }
+    if(info.min1 > info.min2){
+             info.m =  (info.min2+ 60) - info.min1;
+             info.hour = info.hr2 - info.hr1 - 1;
+        }
+    if(info.min2 >= info.min1) {
+            info.hour = info.hr2 - info.hr1;
+             info.m = info.min2 - info.min1;
+        }
+
+   decode_log(info);
+}
+
+int decode_log( struct log_info info)
 {
   int i;
   time_t t;
   time(&t);
   FILE *fp;
-  char date [18];
-  char path[] = "../Logs/";
-  printf("Enter the Date of the Test Report? > ");
-  fgets(date ,18,stdin);
-  printf("The date entered was: %s",date);
+  char location[12] = "../../Logs/";
+  char date[19];
+  char ext[6] = ".doc";
+  char path[32];
+  fflush(stdout);
+  printf("\nEnter the Date of the Test Report? DD Month YYYY> ");
+  fgets(date, sizeof(date), stdin);
+  //Remove Trailing newline character from the string
+  if(date[(strlen(date)- 1)] == '\n'){
+    date[(strlen(date)- 1)] = '\0';
+   }
+   
   /*Creates a file in the location to write in the log information*/
-  strcat(date,".doc");
-  strcat(path,date);
+
+  snprintf(path, sizeof(path),"%s%s%s", location, date, ext);
+
   fp = fopen(path ,"w");
     if (fp == NULL){
         /*Displays an error message on the console when file cant be open or written into*/
@@ -59,35 +136,35 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
         /*Writing the Log data to the file with the information from the user */
         fprintf(fp,"\n\nMICARE TEST REPORT\n");
         print_hline(fp , 70);
-        fprintf(fp,"\nStart Time: %d:%d %s \nEnd Time: %d:%d %s\n" ,hr1,min1,t1,hr2,min2,t2);
+        fprintf(fp,"\nStart Time: %d:%d %s \nEnd Time: %d:%d %s\n" ,info.hr1,info.min1,info.t1,info.hr2,info.min2,info.t2);
         print_hline(fp , 70);
         fprintf(fp,"\nHB EXPECTED FOR EACH DEVICE \n");
         print_hline(fp , 70);
-        fprintf(fp,"\nThe total time is %d hours %d minute(s) \n", hour, m);
+        fprintf(fp,"\nThe total time is %d hours %d minute(s) \n", info.hour, info.m);
         fprintf(fp,"\nRouter(s)\n");
         print_hline(fp , 14);
-        int total_hours = hour;
+        int total_hours = info.hour;
         /*Converts the time from hours to minutes to get the total minutes during the duration*/
-        unsigned int total_min = hour * 60 + m;
+        unsigned int total_min = info.hour * 60 + info.m;
         /*Gets the HB value from the user storing it in an array*/
-        unsigned int val[4]={nc2000hb,nc201hb,nc500hb,nc103hb};
+        unsigned int val[4]={info.nc2000hb,info.nc201hb,info.nc500hb,info.nc103hb};
         unsigned int HB[4], HB2[4];
         for(i=0; i<4; i++){
               HB2[i]=total_min/val[i];
               HB[i]=total_hours/val[i];
           }
-        if(nc2000== 'h'){
+        if(info.nc2000== 'h'){
               if(val[0] > total_hours){
                   fprintf(fp,"\n\nPatient unit (NC-2000): %s HB(s) Expected\n", absent);
               }else{
                   fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB[0]);}
           }
 
-        if(nc2000 == 'm'){
+        if(info.nc2000 == 'm'){
               fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB2[0]);
           }
 
-        if(nc201 == 'h') {
+        if(info.nc201 == 'h') {
              if(val[1]> total_hours){
                   fprintf(fp,"\nBeacon (NC-201)         : %s HB(s) Expected\n\n\nEnd Devices\n", absent);
                   print_hline(fp , 14);
@@ -97,11 +174,11 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
                 }
             }
 
-        if(nc201 == 'm') {
+        if(info.nc201 == 'm') {
              fprintf(fp,"\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB2[1]);
             }
 
-        if(nc500 == 'h') {
+        if(info.nc500 == 'h') {
             print_hline(fp, 20);
             if(val[2]> total_hours){
                 fprintf(fp,"\n\nPendant (NC-500)      : NO HB(s) Expected\n");
@@ -110,21 +187,21 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
                 }
             }
 
-        if(nc500 == 'm'){
+        if(info.nc500 == 'm'){
             for (i=0; i < 14; i++){
                   fprintf(fp,"_");
                }
             fprintf(fp,"\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB2[2]);
             }
 
-        if(nc103 == 'h') {
+        if(info.nc103 == 'h') {
             if(val[3]> total_hours){
                fprintf(fp,"\nPull Station (NC-103)   : NO HB(s) Expected\n");
             }else{
                   fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB[3]);
                  }
             }
-        if(nc103 == 'm') {
+        if(info.nc103 == 'm') {
             fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);
           }
 
@@ -136,73 +213,9 @@ int decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min
      }
 }
 
-
-int data_get(void)
-{
-  unsigned int hr1,min1,hr2,min2;
-  int counter = 0;
-  char t1[20], t2[20];
-  int noon = 12;
-  char am[] = "am";
-  char pm[]  = "pm";
-  unsigned int hour,m,m1,m2;
-  unsigned int nc2000hb, nc500hb, nc103hb, nc201hb;
-  char nc2000, nc500, nc103, nc201;
-  printf("\n");
-  printf("\nEnter the HB Settings like \"6H or 6h\" for Six hours interval 'm' for minute\n");
-  print_hline(con, 40);
-  printf("\n\nRouter(s)\n");
-  print_hline(con, 20);
-  printf("\n\nPatient Unit (NC-2000) HB Set to(Hours/Minutes): ");
-  scanf("%d%c", &nc2000hb,&nc2000);
-  fflush(stdin);
-  printf("\nBeacon(NC-201)HB Set to (Hours/Minutes): ");
-  scanf("%d%c",&nc201hb, &nc201);
-  fflush(stdin);
-  printf("\n\nEnd Device(s)\n");
-  print_hline(con, 20);
-  printf("\n\nPendant (NC-500) HB Set to (Hours/Minutes): ");
-  scanf("%d%c",&nc500hb, &nc500);
-  fflush(stdin);
-  printf("\nPull Station (NC-103) HB Set to (Hours/Minutes): ");
-  scanf("%d%c",&nc103hb, &nc103);
-  fflush(stdin);
-  printf("\n\nDURATION\n");
-  print_hline(con, 20);
-  fflush(stdin);
-  printf("\n\nEnter the Start Time of the Test using 12hour clock like HH:MM am/pm?: ");
-  scanf(" %d:%d %s", &hr1, &min1, t1);
-  fflush(stdin);
-  printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
-  scanf(" %d:%d %s", &hr2, &min2, t2);
-  getchar();
-    if (strcmp(am,t1) == 0){
-             hr1 = hr1;
-        }
-    if (strcmp(pm,t1) == 0){
-             hr1 = hr1 + 12;
-        }
-    if (strcmp(am,t2) == 0){
-             hr2= hr2;
-        }
-    if (strcmp(pm, t2) == 0){
-             hr2 = hr2 + 12;
-        }
-    if(min1 > min2){
-             m =  (min2+ 60) - min1;
-             hour = hr2 - hr1 - 1;
-        }
-    if(min2 >= min1) {
-            hour = hr2 - hr1;
-             m = min2 - min1;
-        }
-  decode_log(nc2000hb,nc2000,nc201hb,nc201,nc500hb,nc500,nc103hb,nc103,hr1,min1,t1,hr2,min2,t2, hour, m);
-}
-
 int user_input(void)
 {
   char buf[2];
-  getchar();
   int c;
   /* Print a prompt indicating we are waiting for user input */
   printf("\n> ");
@@ -265,7 +278,7 @@ void init_console(void)
     system("mode CON: COLS=85 LINES=50");
 }
 
-void main(void)
+int main(int argc, char **argv)
 {
   char cmd;
   /* Initialize the console */
@@ -298,6 +311,8 @@ void main(void)
     }
 
   }
-
   print_goodbye();
+
+
+  return 0;
 }

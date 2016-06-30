@@ -26,7 +26,7 @@ def create_file(lines):
     m = Counter(data)
     string = repr(m)
     try:
-        f = open('../../../LogAnalyzer/Logs/'+ date +' Micare Report.doc', 'w')   
+        f = open('../../Logs/'+ date +' Micare Report.doc', 'w')   
         length = str(len(m))
         f.write("MICARE TEST REPORT\n")
         f.write("_"* 40)
