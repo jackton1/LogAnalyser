@@ -12,6 +12,8 @@
 #include<stdlib.h>
 #include<ctype.h>
 #include<time.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include "test.h"
 
 /*Output to the console*/
@@ -119,101 +121,134 @@ int decode_log( struct log_info info)
   fgets(date, sizeof(date), stdin);
   //Remove Trailing newline character from the string
   if(date[(strlen(date)- 1)] == '\n'){
-    date[(strlen(date)- 1)] = '\0';
-   }
+        date[(strlen(date)- 1)] = '\0';
+    }
 
   /*Creates a file in the location to write in the log information*/
 
   snprintf(path, sizeof(path),"%s%s%s", location, date, ext);
 
-  fp = fopen(path ,"w");
-    if (fp == NULL){
-        /*Displays an error message on the console when file cant be open or written into*/
-        perror("\nError Opening File");
-    }
-    if (fp != NULL){
-        /*Writes the log data in the file*/
+  fp = fopen(path ,"rb+");
+  
+  if (fp == NULL){
+        /*if file does not exist, create it*/
+        char full_path[25];
+	      char *new_path = "./Logs";
+        printf(new_path);
+        int e;
+        struct stat sb;
+        e = stat(new_path, &sb);
+        //printf("e=%d errno=%d\n",e,errno);
+        if (e == 0)
+        {
+        if (sb.st_mode & S_IFDIR)
+        printf("%s is a directory.\n",new_path);
+        if (sb.st_mode & S_IFREG)
+        printf("%s is a regular file.\n",new_path);
+        // etc.
+        }
+        else
+        {
+        printf("The directory does not exist. Creating new directory...\n");
+        // Add more flags to the mode if necessary.
+        e = mkdir(new_path, S_IRWXU);
+        }
+        snprintf(full_path, sizeof(full_path),"%s%s%s",new_path,date,ext);
+        fp = fopen(new_path ,"w");
+	    
+	      if (fp == NULL){
+	   	       perror("No permission creating file/ Disk Full");
+             exit(1);
+			     } else{
+                  printf("\nCreated File in Current DIRECTORY (%s)",new_path);
+                  /*Writes the log data in the file*/
 
-        /*Prints the Date and time the file was generated*/
-        fprintf(fp,"\t\tCreated: %s \n\n",ctime(&t));
+                  /*Prints the Date and time the file was generated*/
+                  fprintf(fp,"\t\tCreated: %s \n\n",ctime(&t));
 
-        /*Writing the Log data to the file with the information from the user */
-        fprintf(fp,"\n\nMICARE TEST REPORT\n");
-        print_hline(fp , 70);
-        fprintf(fp,"\nStart Time: %d:%d %s \nEnd Time: %d:%d %s\n" ,info.hr1,info.min1,info.t1,info.hr2,info.min2,info.t2);
-        print_hline(fp , 70);
-        fprintf(fp,"\nHB EXPECTED FOR EACH DEVICE \n");
-        print_hline(fp , 70);
-        fprintf(fp,"\nThe total time is %d hours %d minute(s) \n", info.hour, info.m);
-        fprintf(fp,"\nRouter(s)\n");
-        print_hline(fp , 14);
-        int total_hours = info.hour;
-        /*Converts the time from hours to minutes to get the total minutes during the duration*/
-        unsigned int total_min = info.hour * 60 + info.m;
-        /*Gets the HB value from the user storing it in an array*/
-        unsigned int val[4]={info.nc2000hb,info.nc201hb,info.nc500hb,info.nc103hb};
-        unsigned int HB[4], HB2[4];
-        for(i=0; i<4; i++){
-              HB2[i]=total_min/val[i];
-              HB[i]=total_hours/val[i];
-          }
-        if(info.nc2000== 'h'){
-              if(val[0] > total_hours || val[0] <= 0){
-                  fprintf(fp,"\n\nPatient unit (NC-2000): NO HB(s) Expected\n");
-              }else{
-                  fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB[0]);}
-          }
-
-        if(info.nc2000 == 'm'){
-              fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB2[0]);
-          }
-
-        if(info.nc201 == 'h') {
-             if(val[1]> total_hours || val[1] <= 0){
-                  fprintf(fp,"\nBeacon (NC-201)         : NO HB(s) Expected\n\n\nEnd Devices\n");
+                  /*Writing the Log data to the file with the information from the user */
+                  fprintf(fp,"\n\nMICARE TEST REPORT\n");
+                  print_hline(fp , 70);
+                  fprintf(fp,"\nStart Time: %d:%d %s \nEnd Time: %d:%d %s\n" ,info.hr1,info.min1,info.t1,info.hr2,info.min2,info.t2);
+                  print_hline(fp , 70);
+                  fprintf(fp,"\nHB EXPECTED FOR EACH DEVICE \n");
+                  print_hline(fp , 70);
+                  fprintf(fp,"\nThe total time is %d hours %d minute(s) \n", info.hour, info.m);
+                  fprintf(fp,"\nRouter(s)\n");
                   print_hline(fp , 14);
-            }else{
-                  fprintf(fp,"\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB[1]);
-                  print_hline(fp , 14);
-                }
-            }
+                  int total_hours = info.hour;
+                  /*Converts the time from hours to minutes to get the total minutes during the duration*/
+                  unsigned int total_min = info.hour * 60 + info.m;
+                  /*Gets the HB value from the user storing it in an array*/
+                  unsigned int val[4]={info.nc2000hb,info.nc201hb,info.nc500hb,info.nc103hb};
+                  unsigned int HB[4], HB2[4];
+                  for(i=0; i<4; i++){
+                        HB2[i]=total_min/val[i];
+                        HB[i]=total_hours/val[i];
+                    }
+                  if(info.nc2000== 'h'){
+                        if(val[0] > total_hours || val[0] <= 0){
+                            fprintf(fp,"\n\nPatient unit (NC-2000): NO HB(s) Expected\n");
+                        }else{
+                            fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB[0]);}
+                    }
 
-        if(info.nc201 == 'm') {
-             fprintf(fp,"\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB2[1]);
-            }
+                  if(info.nc2000 == 'm'){
+                        fprintf(fp,"\n\nPatient unit (NC-2000): %d HB(s) Expected\n",HB2[0]);
+                    }
 
-        if(info.nc500 == 'h') {
-            print_hline(fp, 20);
-            if(val[2]> total_hours || val[2] <= 0){
-                fprintf(fp,"\n\nPendant (NC-500)      : NO HB(s) Expected\n");
-            }else{
-                fprintf(fp,"\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB[2]);
-                }
-            }
+                  if(info.nc201 == 'h') {
+                       if(val[1]> total_hours || val[1] <= 0){
+                            fprintf(fp,"\nBeacon (NC-201)         : NO HB(s) Expected\n\n\nEnd Devices\n");
+                            print_hline(fp , 14);
+                      }else{
+                            fprintf(fp,"\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB[1]);
+                            print_hline(fp , 14);
+                          }
+                      }
 
-        if(info.nc500 == 'm'){
-            print_hline(fp, 14);
-            fprintf(fp,"\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB2[2]);
-            }
+                  if(info.nc201 == 'm') {
+                       fprintf(fp,"\nBeacon (NC-201)         : %d HB(s) Expected\n\n\nEnd Device(s)\n",HB2[1]);
+                      }
 
-        if(info.nc103 == 'h') {
-            if(val[3]> total_hours || val[3] <= 0){
-               fprintf(fp,"\nPull Station (NC-103)   : NO HB(s) Expected\n");
-            }else{
-                  fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB[3]);
-                 }
-            }
-        if(info.nc103 == 'm') {
-            fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);
-          }
+                  if(info.nc500 == 'h') {
+                      print_hline(fp, 20);
+                      if(val[2]> total_hours || val[2] <= 0){
+                          fprintf(fp,"\n\nPendant (NC-500)      : NO HB(s) Expected\n");
+                      }else{
+                          fprintf(fp,"\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB[2]);
+                          }
+                      }
 
-          fclose(fp);
-          printf("\n");
-          print_hline(con, 20);
-          printf("\nSAVED TO FILE\n");
-          print_hline(con, 20);
-     }
-     return 0;
+                  if(info.nc500 == 'm'){
+                      print_hline(fp, 14);
+                      fprintf(fp,"\n\nPendant (NC-500)      : %d HB(s) Expected\n",HB2[2]);
+                      }
+
+                  if(info.nc103 == 'h') {
+                      if(val[3]> total_hours || val[3] <= 0){
+                         fprintf(fp,"\nPull Station (NC-103)   : NO HB(s) Expected\n");
+                      }else{
+                            fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB[3]);
+                           }
+                      }
+                  if(info.nc103 == 'm') {
+                      fprintf(fp,"\nPull Station (NC-103)   : %d HB(s) Expected\n",HB2[3]);
+                    }
+
+                    fclose(fp);
+                    printf("\n");
+                    print_hline(con, 20);
+                    printf("\nSAVED TO FILE\n");
+                    print_hline(con, 20);
+                  }
+            }
+    else{
+        print_hline(con,10);
+        printf("\n WARNING FILE ALREADY EXIST IN DIRECTORY!!!\n");
+        print_hline(con,10);
+        }
+  return 0;    
 }
 
 int user_input(void)
