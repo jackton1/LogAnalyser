@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1467318269 source:c:\users\jtonye\desktop\loganalyzer\log analyzer\test.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<time.h>
+	"test.h"
+
+1467249219 c:\users\jtonye\desktop\loganalyzer\log analyzer\test.h
+
+1467343532 source:c:\users\jtonye\desktop\loganalyzer\hb analyzer\c log analyzer\test.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<time.h>
+	<sys/stat.h>
+	<sys/types.h>
+	"test.h"
+
+1467249219 c:\users\jtonye\desktop\loganalyzer\hb analyzer\c log analyzer\test.h
+
+1467320638 source:c:\users\jtonye\desktop\loganalyzer\hb analyzer\c log analyzer\resource.rc
+
+1467320638 source:c:\users\jtonye\desktop\loganalyzer\hb analyzer\c log analyzer\resource\resource.rc
+
