@@ -29,6 +29,14 @@
 /*Calculate the result for the log data, like the duration of the test, total individual expected heart beat
 for each device*/
 
+//Flush the standard input 
+void FlushStdin(void)
+{
+    int ch;
+    while(((ch=getchar()) != '\n') && (ch != EOF));
+}
+
+//Structure to hold the User defined information
 struct log_info {
              int nc2000hb;
              int nc201hb;
@@ -52,6 +60,7 @@ int decode_log( struct log_info info);
 
 int data_get(void)
 {
+  FlushStdin();
   struct log_info info;
   int noon = 12;
   char am[] = "am";
@@ -63,27 +72,26 @@ int data_get(void)
   print_hline(con, 20);
   printf("\n\nPatient Unit (NC-2000) HB Set to(Hours/Minutes): ");
   scanf("%2i %1c",&(info.nc2000hb),&(info.nc2000));
-  getchar();
+  FlushStdin();
   printf("\nBeacon(NC-201)HB Set to (Hours/Minutes): ");
   scanf("%2i%1c",&(info.nc201hb), &(info.nc201));
-  fflush(stdin);
+  FlushStdin();
   printf("\n\nEnd Device(s)\n");
   print_hline(con, 20);
   printf("\n\nPendant (NC-500) HB Set to (Hours/Minutes): ");
   scanf("%2d%1c",&(info.nc500hb), &(info.nc500));
-  fflush(stdin);
+  FlushStdin();
   printf("\nPull Station (NC-103) HB Set to (Hours/Minutes): ");
   scanf("%2d%1c",&(info.nc103hb), &(info.nc103));
-  fflush(stdin);
+  FlushStdin();
   printf("\n\nDURATION\n");
   print_hline(con, 20);
-  fflush(stdin);
   printf("\n\nEnter the Start Time of the Test using 12hour clock like HH:MM am/pm?: ");
   scanf(" %2d:%2d %2s", &(info.hr1), &(info.min1), info.t1);
-  fflush(stdin);
+  FlushStdin();
   printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
   scanf(" %2d:%2d %2s", &(info.hr2), &(info.min2), info.t2);
-  fflush(stdin);
+  FlushStdin();
     if (strcmp(am,info.t1) == 0){
              info.hr1 = info.hr1;
         }
@@ -285,7 +293,8 @@ int user_input(void)
   /* Make sure the user sees the prompt */
   fflush(stdout);
   /* Get a character from the console */
-  fgets(buf, 2, stdin);
+  fgets(buf,2,stdin);
+
   c = buf[0];
   /* Convert to lower case */
   return tolower(c);
@@ -325,6 +334,7 @@ void print_help(void)
   printf("   'H' print this help\n");
   printf("   'S' to start logging analyzer\n");
   printf("   'T' to terminate\n");
+  FlushStdin();
 }
 
 /* Print a friendly farewell message */
@@ -357,7 +367,6 @@ int main(int argc, char **argv)
   /* Main loop: receive input from the user and process it
    * decides to terminate the application... */
   while ((cmd = user_input()) != 't') {
-
     switch (cmd) {
     case 's':
       /* Get user data... */
@@ -366,10 +375,10 @@ int main(int argc, char **argv)
 
     case 'h':
       print_help();
-      getchar();
       break;
 
     default:
+      getchar();
       /* Invalid entry, inform the user */
       printf("Error: Invalid command!\n");
       getchar();

@@ -51,3 +51,18 @@
 
 1467576216 e:\log\loganalyser\hb analyzer\c log analyzer\test.h
 
+1467350874 source:c:\users\jtonye\desktop\projects\log\c loganalyzer\log analyzer\c log analyzer main\resource\resource.rc
+
+1468864897 source:c:\users\jtonye\desktop\projects\log\c loganalyzer\log analyzer\c log analyzer main\test.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<ctype.h>
+	<time.h>
+	<sys/stat.h>
+	<sys/types.h>
+	"test.h"
+	<windows.h>
+
+1467576216 c:\users\jtonye\desktop\projects\log\c loganalyzer\log analyzer\c log analyzer main\test.h
+
