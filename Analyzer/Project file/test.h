@@ -1,7 +1,7 @@
 #ifndef __TEST_H__
 #define __TEST_H__
 
-void FlushStdin(void);
+void flushStdin(void);
 int data_get(void);
 int user_input(void);
 void print_stars(FILE* fp, int len);

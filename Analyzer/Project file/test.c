@@ -29,11 +29,12 @@
 /*Calculate the result for the log data, like the duration of the test, total individual expected heart beat
 for each device*/
 
-//Flush the standard input 
-void FlushStdin(void)
+//Flush the standard input
+void flushStdin(void)
 {
     int ch;
     while(((ch=getchar()) != '\n') && (ch != EOF));
+    //Do nothing
 }
 
 //Structure to hold the User defined information
@@ -60,7 +61,7 @@ int decode_log( struct log_info info);
 
 int data_get(void)
 {
-  FlushStdin();
+  flushStdin();
   struct log_info info;
   int noon = 12;
   char am[] = "am";
@@ -72,26 +73,26 @@ int data_get(void)
   print_hline(con, 20);
   printf("\n\nPatient Unit (NC-2000) HB Set to(Hours/Minutes): ");
   scanf("%2i %1c",&(info.nc2000hb),&(info.nc2000));
-  FlushStdin();
+  flushStdin();
   printf("\nBeacon(NC-201)HB Set to (Hours/Minutes): ");
   scanf("%2i%1c",&(info.nc201hb), &(info.nc201));
-  FlushStdin();
+  flushStdin();
   printf("\n\nEnd Device(s)\n");
   print_hline(con, 20);
   printf("\n\nPendant (NC-500) HB Set to (Hours/Minutes): ");
   scanf("%2d%1c",&(info.nc500hb), &(info.nc500));
-  FlushStdin();
+  flushStdin();
   printf("\nPull Station (NC-103) HB Set to (Hours/Minutes): ");
   scanf("%2d%1c",&(info.nc103hb), &(info.nc103));
-  FlushStdin();
+  flushStdin();
   printf("\n\nDURATION\n");
   print_hline(con, 20);
   printf("\n\nEnter the Start Time of the Test using 12hour clock like HH:MM am/pm?: ");
   scanf(" %2d:%2d %2s", &(info.hr1), &(info.min1), info.t1);
-  FlushStdin();
+  flushStdin();
   printf("\nEnter the End Time of the Test using 12hour clock like HH:MM am/pm?: ");
   scanf(" %2d:%2d %2s", &(info.hr2), &(info.min2), info.t2);
-  FlushStdin();
+  flushStdin();
     if (strcmp(am,info.t1) == 0){
              info.hr1 = info.hr1;
         }
@@ -220,7 +221,7 @@ int decode_log( struct log_info info)
           fprintf(fp,"\nBeacon (NC-201):%2d%1c\n ",info.nc201hb,info.nc201);
           fprintf(fp,"\nEnd Devices\n");
           print_hline(fp , 14);
-          fprintf(fp,"\nPendant (NC-500): %2d%1c\n ",info.nc500hb,info.nc500);
+          fprintf(fp,"\n\nPendant (NC-500): %2d%1c\n ",info.nc500hb,info.nc500);
           fprintf(fp,"\nPull Station (NC-103): %2d%1c\n",info.nc103hb,info.nc103);
           fprintf(fp,"\n\nRouter(s)\n");
           print_hline(fp , 14);
@@ -304,7 +305,7 @@ void print_hline(FILE* f, int len)
 {
     int i;
        for(i = 0; i < len; i++)
-              fprintf(f, "_");
+            fprintf(f, "_");
 }
 
 void print_stars(FILE* fp, int len)
@@ -334,7 +335,7 @@ void print_help(void)
   printf("   'H' print this help\n");
   printf("   'S' to start logging analyzer\n");
   printf("   'T' to terminate\n");
-  FlushStdin();
+  flushStdin();
 }
 
 /* Print a friendly farewell message */
