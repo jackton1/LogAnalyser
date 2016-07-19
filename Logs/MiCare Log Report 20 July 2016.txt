@@ -1,0 +1,43 @@
+		Created: Mon Jul 18 18:06:02 2016
+ 
+
+MICARE TEST REPORT
+______________________________________________________________________
+
+Start Time: 11:0 am 
+End Time: 23:56 pm
+______________________________________________________________________
+
+
+	HB EXPECTED FOR EACH DEVICE 
+______________________________________________________________________
+The Duration of test is 12 hour(s) 56 minute(s) 
+
+
+Heart Beat (HB) Set Time for Devices 
+______________________________
+
+Patient Unit (NC-2000):  1h
+Beacon (NC-201): 1h
+ 
+End Devices
+______________
+Pendant (NC-500):  1h
+ 
+Pull Station (NC-103):  1h
+
+
+Router(s)
+______________
+
+Patient unit (NC-2000): 12 HB(s) Expected
+
+Beacon (NC-201)         : 12 HB(s) Expected
+
+
+End Device(s)
+__________________________________
+
+Pendant (NC-500)      : 12 HB(s) Expected
+
+Pull Station (NC-103)   : 12 HB(s) Expected
