@@ -4,7 +4,7 @@
  *
  * This project is a Log Report Analyzer which calculates the user defined data.
  * And generates a log report stored in a specified location in the local drive
- * which can be in doc or txt format.
+ * which can be in word, excel or text format.
  */
 
 #include<stdio.h>
