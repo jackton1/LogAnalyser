@@ -37,32 +37,11 @@ void flushStdin(void)
     //Do nothing
 }
 
-//Structure to hold the User defined information
-struct log_info {
-             int nc2000hb;
-             int nc201hb;
-             int nc500hb;
-             int nc103hb;
-             char nc2000;
-             char nc201;
-             char nc500;
-             char nc103;
-              int hr1;
-              int min1;
-              char t1[4];
-              int hr2;
-              int min2;
-              char t2[4];
-              int hour;
-              int m;
-        };
 
-int decode_log( struct log_info info);
-
-int data_get(void)
+log_info data_get(void)
 {
   flushStdin();
-  struct log_info info;
+  log_info info;
   int noon = 12;
   char am[] = "am";
   char pm[]  = "pm";
@@ -122,8 +101,7 @@ int data_get(void)
              info.m = info.min2 - info.min1;
         }
 
-   decode_log(info);
-   return 0;
+   return info;
 }
 
 void make_lower(char *array)
@@ -132,11 +110,13 @@ void make_lower(char *array)
     while (array[i] != '\0' ){
              array[i] = tolower(array[i]);
             i++;
-        }
+    }
 }
 
-int decode_log( struct log_info info)
+int start_log(void)
 {
+  log_info info;
+  info = data_get();
   int i;
   time_t t;
   time(&t);
@@ -371,7 +351,7 @@ int main(int argc, char **argv)
     switch (cmd) {
     case 's':
       /* Get user data... */
-      data_get();
+      start_log();
       break;
 
     case 'h':
